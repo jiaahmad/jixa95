@@ -1,0 +1,135 @@
+body, html {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'segoe UI', 'Helvetica', 'Helvetica Nenu', 'Lucida Sans';
+    background-image: linear-gradient(180deg, #1d1b0f, #d2dbdc);
+}
+
+.top {
+    width: 100%;
+    height: 130px;
+    background: rgb(54, 195, 207);
+    position: fixed;
+    z-index: -1;
+}
+
+.ChatBox {
+    height: calc(100% - 40px);
+    width: 95%;
+    padding: 0;
+}
+
+.profilePic {
+    height: 40px;
+    width: 40px;
+}
+
+.chatPic {
+    height: 30px;
+    width: 30px;
+}
+
+.FriendPic {
+    height: 50px;
+    width: 50px;
+}
+.friend-pic {
+  height: 50px;
+    width: 50px;
+  margin-left: -10px
+}
+
+.form-rounded {
+    border-radius: 1rem;
+}
+
+.name {
+    font-weight: 600;
+}
+
+.under-name {
+    font-size: 12px;
+    line-height: 15px;
+    max-height: 15px;
+}
+
+.icon {
+    font-size: 20px;
+    color: #9CA1A3;
+    cursor: pointer;
+}
+
+.hide {
+    display: none;
+}
+
+.recive {
+    background-color: lightpink;
+    border-radius: 1rem;
+    padding: 10px 15px;
+    display: inline-block;
+}
+
+.send {
+    background-color: whitesmoke;
+    border-radius: 1rem;
+    padding: 10px 15px;
+    display: inline-block;
+}
+
+.time {
+    font-size: 12px;
+    color: #9CA1A3;
+    margin-top: 2%;
+    margin-left: 1%;
+}
+
+.card {
+    height: 94vh;
+}
+
+#messages, #lstChat {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.dropdown-toggle::before, .dropdown-toggle::after {
+    display: none !important;
+}
+
+#emoji {
+    position: absolute;
+    top: -30vh;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+#emoji #myTabContent {
+    height: 20vh;
+    overflow-y: scroll;
+}
+
+#myTabContent a {
+    text-decoration: none;
+}
+
+#notification {
+    background-color: rgb(54, 195, 207);
+    border: 1px solid rgb(42, 155, 165);;
+    border-radius: 50%;
+    position: absolute;
+    margin-top: -10%;
+    font-size: 12px;
+    width: 30%;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    margin-left: -20%;
+}

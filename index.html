@@ -1,0 +1,306 @@
+                                  <!-- Javeria Ahmad > Assignment > Chat app in JS -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bootstrap-4.5.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-analytics.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyC8YI4cOsgo65RetWcckqUzznW1ydpMFvE",
+    authDomain: "jixa-chat-app95.firebaseapp.com",
+    databaseURL: "https://jixa-chat-app95.firebaseio.com",
+    projectId: "jixa-chat-app95",
+    storageBucket: "jixa-chat-app95.appspot.com",
+    messagingSenderId: "93509288272",
+    appId: "1:93509288272:web:b11106f93c0606e51e2c55"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+</head>
+
+<body>
+
+    <!-- Back side green header -->
+    <div class="top"></div>
+    <!-- chatbos main div -->
+    <div class="container-fluid mt-4 bg-white shadow-lg ChatBox">
+        <!-- Main row  -->
+        <div class="row h-100">
+            <!-- colum 1 -->
+            <div class="col-md-4 pr-0 d-none d-md-block" id="side1">
+                <div class="card" id="chatList">
+                    <div class="card-header ">
+                        <div class="row">
+                            <div class="col-1 col-sm-1 col-md-1 d-md-none">
+                                <div class="dropleft">
+                                    <i class="fa fa-arrow-left d-md-none" style="cursor: pointer;"
+                                        onclick="hideChatList()"></i>
+                                </div>
+                            </div>
+                            <div class="col-7 col-sm-7 -md-7">
+                                <img id="imgProfile" class="rounded-circle profilePic" src="Images/fp.jpg" alt="">
+                            </div>
+
+                            <div class="col-2 col-sm-2 col-md-2">
+                                <a href="#" style="float:right;" data-toggle="modal" data-target="#modalNotificationList" onclick="PopulateNotifications()">
+                                    <i class="fas fa-bell icon">
+                                    </i>
+                                    <span id="notification">0</span>
+                                </a>
+
+                                <div class="modal fade" id="modalNotificationList">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    All Users Requests
+                                                    <span class="close" data-dismiss="modal" style="cursor:pointer;">&times;</span>
+                                                </div>
+                                                <ul class="list-group list-group-flush" id="lstNotification"></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-2 col-sm-2 col-md-2">
+                                <div class="dropleft">
+                                    <span class="dropdown-toggle" data-toggle="dropdown"
+                                        style="cursor: pointer;float: right;">
+                                        <i class="fa fa-ellipsis-v icon"></i>
+                                    </span>
+                                    <div class="dropdown-menu">
+                                        <a href="#" class="dropdown-item" id="lnk" onclick="PopulateUserList()" data-toggle="modal" data-target="#modalUserList">All Users</a>
+                                        <a href="#" id="linkChat" onclick="populateFriendList()" class="dropdown-item"
+                                            data-toggle="modal" data-target="#modalFrendList">New Chat</a>
+                                        <a href="#" id="linkSignIn" onclick="signIn()" class="dropdown-item">Sign In</a>
+                                        <a href="#" id="linkSignOut" onclick="signOut()" style="display: none;"
+                                            class="dropdown-item">Sign Out</a>
+                                    </div>
+                                    <!-- genrate friend list dialog box -->
+                                    <div class="modal fade" id="modalFrendList">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        All Friends List
+                                                        <span class="close" style="cursor: pointer;"
+                                                            data-dismiss="modal">&times;</span>
+                                                    </div>
+                                                    <ul class="list-group list-group-flush" id="lstfriend">
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- generate friend list dialog box end  -->
+                                    <div class="modal fade" id="modalUserList">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        All Users list
+                                                        <span class="close" data-dismiss="modal" style="cursor:pointer;">&times;</span>
+                                                    </div>
+                                                    <ul class="list-group list-group-flush" id="lstUsers"></ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush" id="lstChat">
+
+                    </ul>
+                </div>
+            </div>
+            <!-- colum 1 end -->
+            <!-- colum 2 -->
+            <div class="col-md-8 pl-0" id="side2">
+                <div id="chatPanel" class="card hide">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-1 col-sm-1 col-md-1 col-lg-1">
+                                <i class="fa fa-bars mt-2 d-md-none" style="cursor: pointer;"
+                                    onclick="showChatList()"></i>
+                            </div>
+                            <div class="col-1 col-sm-2 col-md-2 col-lg-1">
+                                <img class="profilePic rounded-circle" id="imgChat" src="Images/pp.jpg" alt="">
+                            </div>
+                            <div class="col-5 col-sm-5 col-md-5 col-lg-7">
+                                <div class="col-md-10" style="cursor: pointer;">
+                                    <div class="name" id="divChatName">Any Name</div>
+                                </div>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-4 col-lg-3 icon">
+                                <i class="fa fa-search"></i>
+                                <span class="dropdown">
+                                    <span class="dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa fa-paperclip ml-2"></i>
+                                    </span>
+                                    <div class="dropdown-menu">
+                                        <a href="#" class="dropdown-item" onclick="chooseImage()">
+                                            Image
+                                            <input type="file" id="imgFile" onchange="sendImage(this)" accept="image/*"
+                                                class="d-none">
+                                        </a>
+                                        <a href="#" class="dropdown-item disabled">Documents</a>
+                                        <a href="#" class="dropdown-item disabled">Camera</a>
+                                        <a href="#" class="dropdown-item disabled">Videos</a>
+                                    </div>
+                                </span>
+                                <i class="fa fa-ellipsis-v ml-2"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body" id="messages">
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="row" style="position: relative;">
+
+                            <div class="col-md-12 d-none" id="emoji">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#Smiley"
+                                            role="tab" aria-controls="home" aria-selected="true">Smiley</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#people" role="tab"
+                                            aria-controls="profile" aria-selected="false">People & Body</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#Hearts" role="tab"
+                                            aria-controls="contact" aria-selected="false">Hearts</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="Smiley" role="tabpanel"
+                                        aria-labelledby="home-tab">
+                                        <!-- enter by Javascript -->
+                                    </div>
+                                    <div class="tab-pane fade" id="people" role="tabpanel"
+                                        aria-labelledby="profile-tab">
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F44B;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F91A;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F590;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F596;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F44C;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F90F;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F91E;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F91F;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F44B;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F449;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F446;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F447;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F44D;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F44E;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F44A;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F91B;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F44F;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F64C;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F450;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F932;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F64F;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F4AA;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F442;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F64D;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F64E;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F645;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F646;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F4B1;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F64B;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F647;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F926;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F937;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F326;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F327;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F329;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F30B;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F302;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F525;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F381;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F648;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F649;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F4AF;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F4A6;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F440;</a>
+                                    </div>
+                                    <div class="tab-pane fade" id="Hearts" role="tabpanel"
+                                        aria-labelledby="contact-tab">
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F49B;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F49D;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F496;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F497;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F493;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F5A4;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F494;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F9E1;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F499;</a>
+                                        <a href="#" style="font-size:22px" onclick="getEmojie(this)">&#x1F49A;</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 col-md-1">
+                                <i class="fa fa-smile-o fa-2x" onclick="showEmojiPanal()"></i>
+                            </div>
+                            <div class="col-8 col-md-10" style="cursor: pointer;">
+                                <input id="txtMessage" onkeyup="ChangeSendIcon(this)" onfocus="hideEmojiPanel()"
+                                    type="text" placeholder="Type here" class="form-control form-rounded">
+                            </div>
+                            <div class="col-2 col-md-1">
+                                <!-- <i id="audio" style="cursor: pointer;" class="fa fa-microphone fa-2x"></i>
+                                <i id="send" style="cursor: pointer;" onclick="sendMessage()"
+                                    class="fa fa-paper-plane fa-2x d-none"></i> -->
+                                        <i style="cursor:pointer;" id="audio" onclick="record(this)" class="fas fa-microphone fa-2x"></i>
+                                        <i id="send" class="fa fa-paper-plane fa-2x" style="display:none"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="divStart" class=" text-center">
+                    <i class="far fa-smile mt-5" style="font-size: 250px; color: rgb(54, 195, 207);"></i>
+                    <h1 class="mt-3" style="color: rgb(54, 195, 207);">Welcome to Jixa chat</h1>
+                    <button onclick="showChatList()" class="btn btn-primary d-md-none">Get Started</button>
+                </div>
+            </div>
+            <!-- colum 2 end  -->
+        </div>
+        <!-- Main row end  -->
+    </div>
+      <script src="js/jquery-3.4.1.min.js"></script>
+      <script src="js/popper-1.14.7.min.js"></script>
+      <script src="js/bootstrap-4.3.1.min.js"></script>
+<script src="firebase-messaging-sw.js"></script>
+<script src="js/firebase-messaging.js"></script>
+
+        <script src="app.js"></script>
+
+       
+</body>
+
+</html>
